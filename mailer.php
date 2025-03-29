@@ -72,7 +72,7 @@ try {
     $mail->clearAddresses();
     $mail->addAddress($email);
     $mail->Subject = "Thank You for Contacting Us";
-    $mail->Body = "Dear $name,\n\nThank you for your message...";
+    $mail->Body = "Dear $name,\n\n Thank you for reaching out to us. We have received your message and will get back to you shortly.\n\nBest regards,\nSam Ship Management";
     $mail->send();
 
     $response = ['status' => 'success', 'message' => 'Message sent successfully'];
