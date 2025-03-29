@@ -110,9 +110,11 @@
     >
       <div
         class="container text-center py-5"
-        style="position: relative; z-index: 1; height: 500px;"
+        style="position: relative; z-index: 1; height: 500px"
       >
-        <h1 class="text-white display-3 mb-5" style="margin-top: 150px;">Contact</h1>
+        <h1 class="text-white display-3 mb-5" style="margin-top: 150px">
+          Contact
+        </h1>
         <div class="d-inline-flex align-items-center text-white mb-4">
           <p class="m-0"><a class="text-white" href="index.html">Home</a></p>
           <i class="fa fa-circle px-3"></i>
@@ -154,6 +156,7 @@
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
+          <!-- HTML Form -->
           <div class="col-lg-7">
             <h6 class="text-primary text-uppercase font-weight-bold">
               Contact Us
@@ -161,12 +164,18 @@
             <h1 class="mb-4">Contact For Any Queries</h1>
             <div class="contact-form bg-secondary" style="padding: 30px">
               <div id="success"></div>
-              <form name="sentMessage" id="contactForm" novalidate="novalidate">
+              <form
+                name="sentMessage"
+                id="contactForm"
+                method="POST"
+                novalidate="novalidate"
+              >
                 <div class="control-group">
                   <input
                     type="text"
                     class="form-control border-0 p-4"
                     id="name"
+                    name="name"
                     placeholder="Your Name"
                     required="required"
                     data-validation-required-message="Please enter your name"
@@ -178,6 +187,7 @@
                     type="email"
                     class="form-control border-0 p-4"
                     id="email"
+                    name="email"
                     placeholder="Your Email"
                     required="required"
                     data-validation-required-message="Please enter your email"
@@ -189,6 +199,7 @@
                     type="text"
                     class="form-control border-0 p-4"
                     id="subject"
+                    name="subject"
                     placeholder="Subject"
                     required="required"
                     data-validation-required-message="Please enter a subject"
@@ -200,6 +211,7 @@
                     class="form-control border-0 py-3 px-4"
                     rows="3"
                     id="message"
+                    name="message"
                     placeholder="Message"
                     required="required"
                     data-validation-required-message="Please enter your message"
@@ -224,16 +236,16 @@
     <!-- Contact End -->
 
     <!-- Footer Start -->
-<div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
-  <div class="row pt-5">
-    <div class="col-lg-4 col-md-6 mb-5">
-      <h3 class="text-primary mb-4">SAM Ship Management</h3>
-      <p>
-        SAM Ship Management is one of the leading ship chandlers in the United
-        Arab Emirates supplying top quality products and services to customers
-        all over the Middle East.
-      </p>
-      <!-- <div class="d-flex justify-content-start mt-4">
+    <div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
+      <div class="row pt-5">
+        <div class="col-lg-4 col-md-6 mb-5">
+          <h3 class="text-primary mb-4">SAM Ship Management</h3>
+          <p>
+            SAM Ship Management is one of the leading ship chandlers in the
+            United Arab Emirates supplying top quality products and services to
+            customers all over the Middle East.
+          </p>
+          <!-- <div class="d-flex justify-content-start mt-4">
         <a
           class="btn btn-outline-light btn-social mr-2"
           href="https://www.facebook.com/AlFattanMarineServices"
@@ -250,49 +262,54 @@
           ><i class="fab fa-linkedin-in"></i
         ></a>
       </div> -->
-    </div>
-    <div class="col-lg-4 col-md-6 mb-5">
-      <h3 class="text-primary mb-4">Quick Links</h3>
-      <div class="d-flex flex-column justify-content-start">
-        <a class="text-white mb-2" href="index.html"
-          ><i class="fa fa-angle-right mr-2"></i>Home</a
-        >
-        <a class="text-white mb-2" href="about.html"
-          ><i class="fa fa-angle-right mr-2"></i>Our Company</a
-        >
-        <a class="text-white mb-2" href="service.html"
-          ><i class="fa fa-angle-right mr-2"></i>Our Services</a
-        >
-        <a class="text-white" href="contact.html"
-          ><i class="fa fa-angle-right mr-2"></i>Contact</a
-        >
+        </div>
+        <div class="col-lg-4 col-md-6 mb-5">
+          <h3 class="text-primary mb-4">Quick Links</h3>
+          <div class="d-flex flex-column justify-content-start">
+            <a class="text-white mb-2" href="index.html"
+              ><i class="fa fa-angle-right mr-2"></i>Home</a
+            >
+            <a class="text-white mb-2" href="about.html"
+              ><i class="fa fa-angle-right mr-2"></i>Our Company</a
+            >
+            <a class="text-white mb-2" href="service.html"
+              ><i class="fa fa-angle-right mr-2"></i>Our Services</a
+            >
+            <a class="text-white" href="contact.html"
+              ><i class="fa fa-angle-right mr-2"></i>Contact</a
+            >
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-5">
+          <h3 class="text-primary mb-4">Contact Info</h3>
+          <p>
+            <i class="fa fa-map-marker-alt mr-2"></i>P.O.Box: 861, Abu Dhabi,
+            United Arab Emirates
+          </p>
+          <p><i class="fa fa-phone-alt mr-2"></i>+971566242343</p>
+          <p><i class="fa fa-envelope mr-2"></i>info@samshipmanagement.com</p>
+        </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-6 mb-5">
-      <h3 class="text-primary mb-4">Contact Info</h3>
-      <p>
-        <i class="fa fa-map-marker-alt mr-2"></i>P.O.Box: 861, Abu Dhabi, United
-        Arab Emirates
-      </p>
-      <p><i class="fa fa-phone-alt mr-2"></i>+971566242343</p>
-      <p><i class="fa fa-envelope mr-2"></i>info@samshipmanagement.com</p>
+    <div
+      class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5"
+      style="border-color: #3e3e4e !important"
+    >
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <p class="m-0 text-white">
+            Copyright © 2025 SAM Ship Management | Website by
+            <a
+              href="https://www.euroglobalconsultancy.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              >Euro Global Consultancy</a
+            >
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div
-  class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5"
-  style="border-color: #3e3e4e !important"
->
-  <div class="row">
-    <div class="col-lg-12 text-center">
-      <p class="m-0 text-white">
-        Copyright © 2025 SAM Ship Management | Website by
-        <a href="https://www.euroglobalconsultancy.com" class="text-white text-decoration-none" target="_blank">Euro Global Consultancy</a>
-      </p>
-    </div>
-  </div>
-</div>
-<!-- Footer End -->
+    <!-- Footer End -->
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary back-to-top"
@@ -313,5 +330,42 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- Mailer JavaScript -->
+    <script>
+      $(document).ready(function () {
+        $("#contactForm").submit(function (e) {
+          e.preventDefault();
+
+          $.ajax({
+            type: "POST",
+            url: "contact_process.php", // Path to your PHP file
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function (response) {
+              if (response.status === "success") {
+                $("#success").html(
+                  '<div class="alert alert-success">' +
+                    response.message +
+                    "</div>"
+                );
+                $("#contactForm")[0].reset();
+              } else {
+                $("#success").html(
+                  '<div class="alert alert-danger">' +
+                    response.message +
+                    "</div>"
+                );
+              }
+            },
+            error: function (xhr, status, error) {
+              $("#success").html(
+                '<div class="alert alert-danger">An error occurred. Please try again later.</div>'
+              );
+            },
+          });
+        });
+      });
+    </script>
   </body>
 </html>
