@@ -335,15 +335,43 @@
     <!-- Mailer JavaScript -->
     <script>
       $(document).ready(function () {
+        console.log("Document ready, binding form submit");
+
         $("#contactForm").submit(function (e) {
+          console.log("Form submit triggered");
           e.preventDefault();
+
+          // Validate form is not empty
+          var emptyFields = [];
+          $(this)
+            .find("[required]")
+            .each(function () {
+              if (!$(this).val()) {
+                emptyFields.push($(this).attr("name"));
+              }
+            });
+
+          if (emptyFields.length > 0) {
+            console.log("Empty fields:", emptyFields);
+            $("#success").html(
+              '<div class="alert alert-danger">Please fill all required fields</div>'
+            );
+            return false;
+          }
+
+          console.log("Form data:", $(this).serialize());
 
           $.ajax({
             type: "POST",
-            url: "mailer.php", // Path to your PHP file
+            url: "mailer.php",
             data: $(this).serialize(),
             dataType: "json",
+            beforeSend: function () {
+              console.log("Sending AJAX request");
+              $("#sendMessageButton").prop("disabled", true).text("Sending...");
+            },
             success: function (response) {
+              console.log("AJAX success:", response);
               if (response.status === "success") {
                 $("#success").html(
                   '<div class="alert alert-success">' +
@@ -360,9 +388,16 @@
               }
             },
             error: function (xhr, status, error) {
+              console.log("AJAX error:", status, error);
               $("#success").html(
                 '<div class="alert alert-danger">An error occurred. Please try again later.</div>'
               );
+            },
+            complete: function () {
+              console.log("AJAX complete");
+              $("#sendMessageButton")
+                .prop("disabled", false)
+                .text("Send Message");
             },
           });
         });
