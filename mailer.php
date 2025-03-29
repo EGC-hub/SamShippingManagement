@@ -1,4 +1,8 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header('Content-Type: application/json');
+
 // Include PHPMailer classes
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -15,14 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
     $subject = filter_var(trim($_POST["subject"]), FILTER_SANITIZE_STRING);
     $message = filter_var(trim($_POST["message"]), FILTER_SANITIZE_STRING);
-    
+
     // Validation checks
     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
         header('Content-Type: application/json');
         echo json_encode(['status' => 'error', 'message' => 'Please fill all required fields']);
         exit;
     }
-    
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header('Content-Type: application/json');
         echo json_encode(['status' => 'error', 'message' => 'Invalid email format']);
@@ -39,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPAuth = true;
         $mail->Username = EMAIL_USERNAME; // Your SMTP username
         $mail->Password = EMAIL_PASSWORD; // Your SMTP password or App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // For port 465
         $mail->Port = 465;
 
         // Email settings
@@ -50,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->addAddress(EMAIL_USERNAME); // Your admin email
         $mail->Subject = "New Contact Form Submission: $subject";
         $mail->Body = "Name: $name\n" .
-                      "Email: $email\n" .
-                      "Subject: $subject\n" .
-                      "Message:\n$message";
+            "Email: $email\n" .
+            "Subject: $subject\n" .
+            "Message:\n$message";
 
         $mail->send();
 
@@ -61,11 +65,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->addAddress($email); // User's email
         $mail->Subject = "Thank You for Contacting Us";
         $mail->Body = "Dear $name,\n\n" .
-                      "Thank you for reaching out to us. We have received your message:\n\n" .
-                      "Subject: $subject\n" .
-                      "Message: $message\n\n" .
-                      "We'll get back to you soon!\n\n" .
-                      "Best regards,\nYour Website Team";
+            "Thank you for reaching out to us. We have received your message:\n\n" .
+            "Subject: $subject\n" .
+            "Message: $message\n\n" .
+            "We'll get back to you soon!\n\n" .
+            "Best regards,\nYour Website Team";
 
         $mail->send();
 
