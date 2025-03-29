@@ -1,7 +1,13 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Turn off ALL output buffering and clean any existing buffers
+while (ob_get_level()) ob_end_clean();
+
+// Set headers FIRST - before any output
 header('Content-Type: application/json');
+
+// Disable error display (enable for debugging)
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Set to 1 for debugging
 
 // Include PHPMailer classes
 use PHPMailer\PHPMailer\PHPMailer;
@@ -10,84 +16,71 @@ use PHPMailer\PHPMailer\Exception;
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
-
 require_once '../mailerConfig.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate form inputs
+// Create response array
+$response = ['status' => 'error', 'message' => 'Unknown error occurred'];
+
+try {
+    // Validate request method
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        throw new Exception("Invalid request method");
+    }
+
+    // Validate required fields
+    $required = ['name', 'email', 'subject', 'message'];
+    foreach ($required as $field) {
+        if (empty($_POST[$field])) {
+            throw new Exception("Please fill all required fields");
+        }
+    }
+
+    // Sanitize inputs
     $name = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
     $subject = filter_var(trim($_POST["subject"]), FILTER_SANITIZE_STRING);
     $message = filter_var(trim($_POST["message"]), FILTER_SANITIZE_STRING);
 
-    // Validation checks
-    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => 'Please fill all required fields']);
-        exit;
-    }
-
+    // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => 'Invalid email format']);
-        exit;
+        throw new Exception("Invalid email format");
     }
 
     // Initialize PHPMailer
     $mail = new PHPMailer(true);
 
-    try {
-        // SMTP Configuration
-        $mail->isSMTP();
-        $mail->Host = 'smtp.hostinger.com'; // Change to your SMTP host
-        $mail->SMTPAuth = true;
-        $mail->Username = EMAIL_USERNAME; // Your SMTP username
-        $mail->Password = EMAIL_PASSWORD; // Your SMTP password or App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // For port 465
-        $mail->Port = 465;
+    // SMTP Configuration
+    $mail->isSMTP();
+    $mail->Host = 'smtp.hostinger.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = EMAIL_USERNAME;
+    $mail->Password = EMAIL_PASSWORD;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = 465;
 
-        // Email settings
-        $mail->setFrom(EMAIL_USERNAME, 'Sam Ship Management'); // Your admin email and name
-        $mail->isHTML(false); // Set to true if you want HTML emails
+    // Email settings
+    $mail->setFrom(EMAIL_USERNAME, 'Sam Ship Management');
+    $mail->isHTML(false);
 
-        // Send email to admin
-        $mail->addAddress(EMAIL_USERNAME); // Your admin email
-        $mail->Subject = "New Contact Form Submission: $subject";
-        $mail->Body = "Name: $name\n" .
-            "Email: $email\n" .
-            "Subject: $subject\n" .
-            "Message:\n$message";
+    // Send to admin
+    $mail->addAddress(EMAIL_USERNAME);
+    $mail->Subject = "New Contact Form Submission: $subject";
+    $mail->Body = "Name: $name\nEmail: $email\nSubject: $subject\nMessage:\n$message";
+    $mail->send();
 
-        $mail->send();
+    // Send confirmation to user
+    $mail->clearAddresses();
+    $mail->addAddress($email);
+    $mail->Subject = "Thank You for Contacting Us";
+    $mail->Body = "Dear $name,\n\nThank you for your message...";
+    $mail->send();
 
-        // Clear recipients and send confirmation email to user
-        $mail->clearAddresses();
-        $mail->addAddress($email); // User's email
-        $mail->Subject = "Thank You for Contacting Us";
-        $mail->Body = "Dear $name,\n\n" .
-            "Thank you for reaching out to us. We have received your message:\n\n" .
-            "Subject: $subject\n" .
-            "Message: $message\n\n" .
-            "We'll get back to you soon!\n\n" .
-            "Best regards,\nYour Website Team";
+    $response = ['status' => 'success', 'message' => 'Message sent successfully'];
 
-        $mail->send();
-
-        // Send success response
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'success', 'message' => 'Message sent successfully']);
-        exit;
-
-    } catch (Exception $e) {
-        // Send error response
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => "Message could not be sent. Error: {$mail->ErrorInfo}"]);
-        exit;
-    }
-} else {
-    // If not POST request
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
-    exit;
+} catch (Exception $e) {
+    $response['message'] = $e->getMessage();
 }
+
+// Ensure only JSON is output
+die(json_encode($response));
 ?>
